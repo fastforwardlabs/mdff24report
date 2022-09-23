@@ -1,34 +1,34 @@
-let fs = require('fs-extra')
-let path = require('path')
-let md = require('markdown-it')({ typographer: true, html: true })
-var implicitFigures = require('markdown-it-implicit-figures')
+let fs = require("fs-extra");
+let path = require("path");
+let md = require("markdown-it")({ typographer: true, html: true });
+var implicitFigures = require("markdown-it-implicit-figures");
 
-let deploy_location = process.argv[2]
+let deploy_location = process.argv[2];
 
-let line = 28
-let lq = line / 4
-let bf = 5 / 8
-let hf = 6 / 8
+let line = 28;
+let lq = line / 4;
+let bf = 5 / 8;
+let hf = 6 / 8;
 
-let rfs = bf * line
-let lh = 1 / bf
-let rlh = line
+let rfs = bf * line;
+let lh = 1 / bf;
+let rlh = line;
 
-md.use(require('markdown-it-anchor'))
-md.use(require('markdown-it-table-of-contents'), {
+md.use(require("markdown-it-anchor"));
+md.use(require("markdown-it-table-of-contents"), {
   includeLevel: [2, 3],
   containerHeaderHtml: `<div id="toc-header" style="display: flex; font-weight: bold; text-transform: uppercase;">
      <div><button id="toggle_contents" style="padding-left: 0.5ch; padding-right: 0.5ch; cursor: pointer; position: relative; top: -1px;">☰</button><span id="contents-label" style="margin-left: 0;"> Contents</span></div>
   </div>`,
-})
-md.use(require('markdown-it-container'), 'info', {})
-md.use(require('markdown-it-footnote'))
+});
+md.use(require("markdown-it-container"), "info", {});
+md.use(require("markdown-it-footnote"));
 md.use(implicitFigures, {
   dataType: false, // <figure data-type="image">, default: false
   figcaption: true, // <figcaption>alternative text</figcaption>, default: false
   tabindex: false, // <figure tabindex="1+n">..., default: false
   link: false, // <a href="img.png"><img src="img.png"></a>, default: false
-})
+});
 
 let hcounter = `
 h1, h2, h3, h4, h5, h6, button { font-size: inherit; line-height: inherit; font-style: inherit; font-weight: inherit; margin: 0; font-feature-settings: "tnum"; border: none; background: transparent; padding: 0;  }
@@ -173,10 +173,10 @@ table ul, table ol {
   list-style-position: inside;
   padding-left: 0;
 }
-`
+`;
 
-let sidebar_width = 32
-let content_width = 64
+let sidebar_width = 32;
+let content_width = 64;
 
 function makeFonts() {
   return `
@@ -222,7 +222,7 @@ function makeFonts() {
     font-weight: bold;
     font-style: italic;
   }
-  `
+  `;
 }
 
 function makeStyle() {
@@ -470,7 +470,7 @@ h2 {
     }
   }
 }
-</style>`
+</style>`;
 }
 
 function makeJS() {
@@ -567,25 +567,33 @@ function makeJS() {
       }
       mediaQueryList.addListener(handleBreakpoint);
     }, false);
-  </script>`
+  </script>`;
 }
 
-// -- Report metadata to be updated by REs -- 
+// -- Report metadata to be updated by REs --
 // update Title, description, image url, content url, Google Analytics "UA" tag, and PDF name
 function makeHead() {
-  let title = 'Structural Time Series'
+  let title = "Text Style Transfer";
   let description =
-    'An online research report on structural time series by Cloudera Fast Forward.'
+    "An online research report on Text Style Transfer by Cloudera Fast Forward Labs.";
   return `<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K1QKY1ERLP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-K1QKY1ERLP');
+</script>
 <meta charset="utf-8" />
 
 <title>${title}</title>
 <meta name="description" content="${description}" />
-
 <meta property="og:title" content="${title}" /> 
 <meta property="og:description" content="${description}" />
-<meta property="og:image" content="https://structural-time-series.fastforwardlabs.com/figures/ff16-cover-splash.png" />
-<meta property="og:url" content="https://structural-time-series.fastforwardlabs.com" />
+<meta property="og:image" content="https://text-style-transfer.fastforwardlabs.com/figures/FF24_cover.png" />
+<meta property="og:url" content="https://text-style-transfer.fastforwardlabs.com" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <meta name="viewport" content="width=device-width" />
@@ -593,29 +601,7 @@ function makeHead() {
 
 ${makeStyle()}
 ${makeJS()}
-
-<!-- Google Analytics -->
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-157475426-9', 'auto');
-  ga('send', 'pageview');
-
-  window.addEventListener('load', function() {
-    document.getElementById('report-pdf-download').addEventListener('click', function() {
-      ga('send', {
-        hitType: 'pageview',
-        page: '//FF16-Structural_Time_Series-Cloudera_Fast_Forward.pdf'
-      });
-    });
-  })
-
-</script>
-<!-- End Google Analytics -->
-</head>`
+</head>`;
 }
 // end report metadata
 
@@ -635,39 +621,39 @@ function wrap(content) {
         </div>
       </body>
    </html>
-  `
+  `;
 }
 
-let filenames = fs.readdirSync(path.join(__dirname, 'src'))
+let filenames = fs.readdirSync(path.join(__dirname, "src"));
 // let filenames = ['00-frontmatter.md', '03-prototype.md'];
 //
-filenames = filenames.filter(function(file) {
-  return path.extname(file).toLowerCase() === '.md'
-})
-console.log(filenames)
+filenames = filenames.filter(function (file) {
+  return path.extname(file).toLowerCase() === ".md";
+});
+console.log(filenames);
 
-let report = ''
+let report = "";
 for (let f = 0; f < filenames.length; f++) {
-  console.log(filenames[f])
+  console.log(filenames[f]);
   let content = fs.readFileSync(
-    path.join(__dirname, 'src/') + filenames[f],
-    'utf-8'
-  )
-  report += content + `\n`
+    path.join(__dirname, "src/") + filenames[f],
+    "utf-8"
+  );
+  report += content + `\n`;
 }
-let prehtml = wrap(md.render(report))
+let prehtml = wrap(md.render(report));
 
 // wrap tables for mobile, not supposed to do this
 html = prehtml.replace(
   /(<table[^>]*>(?:.|\n)*?<\/table>)/g,
   '<div style="width: 100%; overflow-x: auto;">$1</div>'
-)
+);
 
-let write_index_to = path.join(__dirname, 'out/')
-if (deploy_location === 'exp') {
-  fs.mkdir(path.join(__dirname, 'exp'))
-  fs.copySync(path.join(__dirname, 'out'), path.join(__dirname, 'exp'))
-  write_index_to = path.join(__dirname, 'exp/')
+let write_index_to = path.join(__dirname, "out/");
+if (deploy_location === "exp") {
+  fs.mkdir(path.join(__dirname, "exp"));
+  fs.copySync(path.join(__dirname, "out"), path.join(__dirname, "exp"));
+  write_index_to = path.join(__dirname, "exp/");
 }
 
-fs.writeFileSync(write_index_to + 'index.html', html)
+fs.writeFileSync(write_index_to + "index.html", html);
