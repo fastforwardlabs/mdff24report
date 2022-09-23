@@ -6,9 +6,9 @@ Subjective language is all around us -- product advertisements, social marketing
 
 However, there are certain modes of communication today like textbooks, encyclopedias, and [some] news outlets that do strive for objectivity. In these contexts, bias in the form of subjectivity is considered inappropriate, yet it remains prevalent because it is our rooted, societal tone. Subjectivity bias occurs when language that should be neutral and fair is skewed by feeling, opinion, or taste (whether consciously or unconsciously)^[[Automatically Neutralizing Subjective Bias in Text](https://arxiv.org/pdf/1911.09709.pdf)]. The presence of this type of bias concealed within a supposedly objective mode of communication has the potential to wear down our collective trust and incite social animosity as opinions are incorrectly perceived as fact.
 
-Since maintaining a neutral tone of voice is challenging and unnatural for humans, successful automation of this task has the potential to be useful for neutrality-striving authors and editors. Of course, this is no easy feat. In this blog post, we introduce our approach to automatically neutralizing subjectivity bias in text using HuggingFace transformers.
+Since maintaining a neutral tone of voice is challenging and unnatural for humans, successful automation of this task has the potential to be useful for neutrality-striving authors and editors. Of course, this is no easy feat. Below, we introduce our approach to automatically neutralizing subjectivity bias in text using HuggingFace transformers.
 
-### Defining the Task
+### Defining the task
 
 As mentioned earlier, Text Style Transfer (TST) is a natural language generation task which aims to automatically control the style attributes of text while preserving the content.
 
@@ -56,7 +56,7 @@ Similar to epistemological bias, demographic bias occurs when an author utilizes
 
 For more detailed discussion on these classes of subjectivity bias, please see [this excellent source paper](https://aclanthology.org/P13-1162.pdf) where these definitions and examples are adapted from.
 
-### Modeling Approach
+### Modeling approach
 
 Now that we have an understanding of the TST task at hand and are familiar with the dataset we’ll be using, let’s discuss our approach to solving the problem. We will formulate Text Style Transfer as a conditional generation task and fine-tune a pre-trained[ ](https://huggingface.co/facebook/bart-base)BART model on the parallel Wiki Neutrality Corpus in similar fashion to a text summarization use case.
 
@@ -105,7 +105,7 @@ In Figure 11 above, we see how noise is first introduced to the input text seque
 
 Rather than introducing novel techniques, BART’s effectiveness comes from combining the strengths of many advances before it into one empirically driven, cohesive strategy -- the architecture of [original Transformer](https://arxiv.org/pdf/1706.03762.pdf), bidirectional encodings from [BERT](https://arxiv.org/pdf/1810.04805.pdf), autoregressive generation from [GPT](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf), longer training + larger batch sizes + longer sequences + dynamic masking from [RoBERTa](https://arxiv.org/pdf/1907.11692.pdf), and span masking from [SpanBERT](https://arxiv.org/pdf/1907.10529.pdf).
 
-### Establishing a Baseline
+### Establishing a baseline
 
 As with any machine learning problem, it’s important to establish a baseline model to serve as a performance benchmark to measure progress against. Upon releasing the WNC dataset, the authors simultaneously released their modeling approach, dataset splits, and results for this TST task, which serve as an excellent benchmark for us to levelset our modeling approach against.
 
@@ -145,6 +145,6 @@ For modeling, we make extensive use of the mighty Huggingface transformers libra
 
 The best model from training achieves 93.36 BLEU and 47.39 accuracy. While our results are competitive, they cannot be directly compared with the WNC authors’ because of differences in preprocessing. Despite this, they do provide sufficient validation of our approach as a means to automatically neutralize subjectivity bias in text.
 
-### Modeling the Full Dataset
+### Modeling the full dataset
 
 Our efforts thus far in developing a baseline model have affirmed our modeling approach and laid a foundation to improve upon. In the following section, we apply the same [data preprocessing steps](https://github.com/fastforwardlabs/text-style-transfer/blob/main/scripts/prepare_data.py) and [model training configuration](https://github.com/fastforwardlabs/text-style-transfer/blob/main/scripts/train/seq2seq/train_seq2seq.py) to the full dataset consisting of ~180,000 subjective-to-neutral sentence pairs that include the one-word edits that we used before, as well as all the sentence pairs with more than one-word edits -- a materialy more difficult generative modeling task. We also propose a set of custom automated evaluation metrics aimed to better quantify the subtleties of text style transfer than traditional metrics.

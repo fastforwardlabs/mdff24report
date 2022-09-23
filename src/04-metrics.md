@@ -1,10 +1,10 @@
 ## Evaluation Metrics
 
-### Challenges with Evaluating TST
+### Challenges with evaluating TST
 
 Evaluating the quality of machine generated text is hard. Human evaluation is regarded as the best indicator of quality, but unfortunately is expensive, slow, and lacks reproducibility, making it a cumbersome approach for validating model performance. For this reason, NLP practitioners often rely on automated evaluation metrics to serve as a cheap and quick proxy for human judgment. Of course, this compromise comes with tradeoffs.
 
-Traditional automated metrics like the [BLEU score](https://aclanthology.org/P02-1040.pdf) -- the most common metric for evaluating neural machine translation (NMT) -- work by counting the lexical n-gram overlap between generated outputs and human-annotated, gold-standard references. As we saw in the previous blog post, BLEU is one of the metrics used by the [WNC paper authors](https://arxiv.org/pdf/1911.09709.pdf) to benchmark their model performance against a set of references. Consider the task of comparing the following candidate sentence with the two references while evaluating for semantic equivalence.
+Traditional automated metrics like the [BLEU score](https://aclanthology.org/P02-1040.pdf) -- the most common metric for evaluating neural machine translation (NMT) -- work by counting the lexical n-gram overlap between generated outputs and human-annotated, gold-standard references. As we saw in the previously, BLEU is one of the metrics used by the [WNC paper authors](https://arxiv.org/pdf/1911.09709.pdf) to benchmark their model performance against a set of references. Consider the task of comparing the following candidate sentence with the two references while evaluating for semantic equivalence.
 
 **Candidate:** He is a great singer.
 
@@ -28,7 +28,7 @@ As discussed in our introduction section above, a comprehensive evaluation of qu
 
 All three criteria are important in making a determination of quality. If our model transfers text from subjective to neutral tone, but omits or changes an important piece of information (e.g. a proper noun or subject), it fails to preserve the meaning of the original text. On the flip side, if the model reproduces the source text exactly as is, it would have perfect content preservation, but fail completely in style transfer. Finally, the text generation is useless if it contains all the expected tokens, but in an illegible sequence.
 
-### Automated Evaluation Metrics
+### Automated evaluation metrics
 
 In the following sections, we’ll discuss reference-free, task-specific metrics aimed at tackling the first two of these criteria while also defining our implementation and design choices.
 
